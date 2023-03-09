@@ -1,0 +1,168 @@
+{
+	"metadata": {
+		"version": 1
+	},
+	"application": {
+		"name": "dimitris-test",
+		"language": "GOLANG",
+		"artifact_store": {
+			"repositories": null
+		}
+	},
+	"pipeline": {
+		"segments": [
+			{
+				"name": "Build",
+				"segment_type": "build",
+				"publish_attributes": {
+					"publish": true,
+					"docker_images": [
+						{
+							"repository": "((application.name))",
+							"tags": [
+								"((application.version))"
+							],
+							"context": "."
+						}
+					]
+				},
+				"exit_actions": {},
+				"properties": [
+					{
+						"name": "gopath",
+						"value": "${SEGMENT_BASE_DIR}/cache/go",
+						"description": "GOPATH is set to ${SEGMENT_BASE_DIR}/cache/go by default, when caching is enabled. Caches are maintained on the worker where your build gets allocated. For a new worker assigned to the build, the cache will be re-created"
+					}
+				],
+				"deployment_strategy": {},
+				"application_init": {},
+				"packages": [
+					{
+						"name": "((application.name))",
+						"downloads": [],
+						"files": [
+							"((application.name))*"
+						]
+					}
+				],
+				"instance_tags": [
+					{
+						"name": "application.name",
+						"value": "((application.name))"
+					}
+				],
+				"cache_info": {
+					"paths": [
+						"((gopath))"
+					]
+				},
+				"tasks": [
+					{
+						"name": "dimitris-test",
+						"docker_options": {}
+					}
+				]
+			},
+			{
+				"name": "Integration",
+				"segment_type": "integration",
+				"run_after": [
+					"Build"
+				],
+				"exit_actions": {},
+				"deployment_strategy": {
+					"canaries": 1,
+					"max_in_flight": 1,
+					"canary_watch_time": "5000-30000",
+					"update_watch_time": "5000-30000",
+					"serial": false
+				},
+				"application_init": {},
+				"package_dependencies": [
+					"((application.name))"
+				],
+				"instance_tags": [
+					{
+						"name": "application.name",
+						"value": "((application.name))"
+					}
+				],
+				"tasks": [
+					{
+						"name": "dimitris-test",
+						"docker_options": {}
+					}
+				],
+				"k8s_instance_groups": [
+					{
+						"tool_config_alias_id": "5e7bdf98-dc21-4969-4bfa-0c719dd7844d",
+						"docker_registry_alias_id": "cc9edc73-f30b-4c9a-5d01-e03f7930a904",
+						"name": "((application.name))",
+						"cluster_name": "",
+						"namespace": "((application.name))-((application.branch))",
+						"replicas": 1,
+						"containers": [
+							{
+								"name": "((application.name))",
+								"image": "guide-rails/((application.name)):((application.version))",
+								"resources": {},
+								"imagePullPolicy": "Always",
+								"securityContext": {
+									"capabilities": {
+										"drop": [
+											"ALL"
+										]
+									},
+									"runAsNonRoot": true,
+									"allowPrivilegeEscalation": false
+								}
+							}
+						],
+						"ingress": {
+							"metadata": {
+								"creationTimestamp": null
+							},
+							"spec": {
+								"rules": [
+									{
+										"http": {
+											"paths": [
+												{
+													"path": "/",
+													"backend": {
+														"servicePort": 0
+													}
+												}
+											]
+										}
+									}
+								]
+							},
+							"status": {
+								"loadBalancer": {}
+							}
+						},
+						"load_balancing_type": 2,
+						"service_name": "((application.name))-((application.branch))",
+						"type": "Deployment",
+						"deploy_application": true
+					}
+				],
+				"deployment_target": 2
+			}
+		],
+		"exit_actions": {},
+		"default_properties": [],
+		"deployment_files": [],
+		"application_init": {},
+		"releases": [
+			{
+				"name": "consul",
+				"version": "latest"
+			}
+		]
+	},
+	"organization": {
+		"orgname": "GR-Product"
+	}
+}
