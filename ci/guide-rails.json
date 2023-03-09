@@ -59,6 +59,14 @@
 				"tasks": [
 					{
 						"name": "dimitris-test",
+						"steps": [
+							{
+								"name": "build ",
+								"definition": "build ",
+								"command": "go build -o app",
+								"properties": null
+							}
+						],
 						"docker_options": {}
 					}
 				]
