@@ -1,6 +1,6 @@
 {
 	"metadata": {
-		"version": 1
+		"version": 2
 	},
 	"application": {
 		"name": "dimitris-test",
@@ -66,6 +66,7 @@
 			{
 				"name": "Integration",
 				"segment_type": "integration",
+				"persistent": true,
 				"run_after": [
 					"Build"
 				],
@@ -105,6 +106,14 @@
 							{
 								"name": "((application.name))",
 								"image": "guide-rails/((application.name)):((application.version))",
+								"ports": [
+									{
+										"name": "endpoint",
+										"hostPort": 8080,
+										"containerPort": 8080,
+										"protocol": "TCP"
+									}
+								],
 								"resources": {},
 								"imagePullPolicy": "Always",
 								"securityContext": {
@@ -118,6 +127,7 @@
 								}
 							}
 						],
+						"ingress_enabled": true,
 						"ingress": {
 							"metadata": {
 								"creationTimestamp": null
@@ -125,6 +135,7 @@
 							"spec": {
 								"rules": [
 									{
+										"host": "((application.name)).beescloud.com",
 										"http": {
 											"paths": [
 												{
@@ -144,6 +155,16 @@
 						},
 						"load_balancing_type": 2,
 						"service_name": "((application.name))-((application.branch))",
+						"alb_ingress_controller_annotations": {
+							"alb.ingress.kubernetes.io/certificate-arn": "arn:aws:iam::818130157321:server-certificate/guide-rails-wildcard-20230627,arn:aws:acm:us-west-2:818130157321:certificate/5d9b1608-cc23-4101-96f8-8b4d3def0d58",
+							"alb.ingress.kubernetes.io/healthcheck-path": "/",
+							"alb.ingress.kubernetes.io/healthcheck-port": "traffic-port",
+							"alb.ingress.kubernetes.io/listen-ports": "[{\"HTTP\": 80}, {\"HTTPS\":443}]",
+							"alb.ingress.kubernetes.io/scheme": "internet-facing",
+							"alb.ingress.kubernetes.io/ssl-policy": "ELBSecurityPolicy-FS-1-2-Res-2020-10",
+							"alb.ingress.kubernetes.io/ssl-redirect": "443",
+							"alb.ingress.kubernetes.io/subnets": "subnet-0824acafe912d3997, subnet-0e2334d4d4099bfcd"
+						},
 						"type": "Deployment",
 						"deploy_application": true
 					}
@@ -154,13 +175,7 @@
 		"exit_actions": {},
 		"default_properties": [],
 		"deployment_files": [],
-		"application_init": {},
-		"releases": [
-			{
-				"name": "consul",
-				"version": "latest"
-			}
-		]
+		"application_init": {}
 	},
 	"organization": {
 		"orgname": "GR-Product"
