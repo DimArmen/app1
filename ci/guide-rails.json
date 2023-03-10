@@ -90,16 +90,7 @@
 									}
 								],
 								"resources": {},
-								"imagePullPolicy": "Always",
-								"securityContext": {
-									"capabilities": {
-										"drop": [
-											"ALL"
-										]
-									},
-									"runAsNonRoot": true,
-									"allowPrivilegeEscalation": false
-								}
+								"imagePullPolicy": "Always"
 							}
 						],
 						"ingress_enabled": true,
