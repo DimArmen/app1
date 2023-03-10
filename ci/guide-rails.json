@@ -50,6 +50,7 @@
 			},
 			{
 				"name": "Release",
+				"persistence": true,
 				"segment_type": "release",
 				"run_after": [
 					"Build"
