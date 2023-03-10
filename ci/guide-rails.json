@@ -90,7 +90,16 @@
 									}
 								],
 								"resources": {},
-								"imagePullPolicy": "Always"
+								"imagePullPolicy": "Always",
+								"securityContext": {
+									"capabilities": {
+										"drop": [
+											"ALL"
+										]
+									},
+									"runAsNonRoot": true,
+									"allowPrivilegeEscalation": false
+								}
 							}
 						],
 						"ingress_enabled": true,
@@ -101,7 +110,7 @@
 							"spec": {
 								"rules": [
 									{
-										"host": "((application.name)).beescloud.com",
+										"host": "((application.name)).guide-rails.io",
 										"http": {
 											"paths": [
 												{
