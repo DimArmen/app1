@@ -87,12 +87,6 @@
 										"hostPort": 8080,
 										"containerPort": 8080,
 										"protocol": "TCP"
-									},
-									{
-										"name": "http2",
-										"hostPort": 8081,
-										"containerPort": 8080,
-										"protocol": "TCP"
 									}
 								],
 								"resources": {},
@@ -121,12 +115,6 @@
 											"paths": [
 												{
 													"path": "/http1/*",
-													"backend": {
-														"servicePort": 0
-													}
-												},
-												{
-													"path": "/http2/*",
 													"backend": {
 														"servicePort": 0
 													}
