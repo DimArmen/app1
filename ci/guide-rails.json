@@ -103,7 +103,7 @@
 											"ALL"
 										]
 									},
-									"runAsNonRoot": true,
+									"runAsNonRoot": false,
 									"allowPrivilegeEscalation": false
 								}
 							}
