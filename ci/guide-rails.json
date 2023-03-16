@@ -83,14 +83,29 @@
 								"image": "guide-rails/((application.name)):((application.version))",
 								"ports": [
 									{
-										"name": "endpoint",
+										"name": "http1",
 										"hostPort": 8080,
+										"containerPort": 8080,
+										"protocol": "TCP"
+									},
+									{
+										"name": "http2",
+										"hostPort": 8081,
 										"containerPort": 8080,
 										"protocol": "TCP"
 									}
 								],
 								"resources": {},
-								"imagePullPolicy": "Always"
+								"imagePullPolicy": "Always",
+								"securityContext": {
+									"capabilities": {
+										"drop": [
+											"ALL"
+										]
+									},
+									"runAsNonRoot": true,
+									"allowPrivilegeEscalation": false
+								}
 							}
 						],
 						"ingress_enabled": true,
@@ -105,7 +120,13 @@
 										"http": {
 											"paths": [
 												{
-													"path": "/*",
+													"path": "/http1/*",
+													"backend": {
+														"servicePort": 0
+													}
+												},
+												{
+													"path": "/http2/*",
 													"backend": {
 														"servicePort": 0
 													}
