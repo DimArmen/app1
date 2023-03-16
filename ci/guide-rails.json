@@ -51,6 +51,7 @@
 			{
 				"name": "Release",
 				"segment_type": "release",
+				"persistent": true,
 				"run_after": [
 					"Build"
 				],
