@@ -115,7 +115,7 @@
 										"http": {
 											"paths": [
 												{
-													"path": "/http1/*",
+													"path": "/*",
 													"backend": {
 														"servicePort": 0
 													}
