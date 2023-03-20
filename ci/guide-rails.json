@@ -85,8 +85,8 @@
 								"ports": [
 									{
 										"name": "http1",
-										"hostPort": 8080,
-										"containerPort": 8080,
+										"hostPort": 8081,
+										"containerPort": 8081,
 										"protocol": "TCP"
 									}
 								],
@@ -149,7 +149,13 @@
 			}
 		],
 		"exit_actions": {},
-		"default_properties": [],
+		"default_properties": [
+			{
+				"name": "PORT",
+				"value": "8081",
+				"type": "string"
+			}
+		],
 		"deployment_files": [],
 		"application_init": {}
 	},
