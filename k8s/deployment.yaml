@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dimitris-app-1
+spec:
+  selector:
+    matchLabels:
+      app: dimitris-app-1
+  template:
+    metadata:
+      labels:
+        app: dimitris-app-1
+    spec:
+      containers:
+      - name: dimitris-app-1
+        image: dimarmen/app1:4233376257
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8088
+        env:
+          - name: PORT
+            value: "8088"
+          - name: APP
+            value: APP-1

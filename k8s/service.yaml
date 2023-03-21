@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dimitris-app-1
+spec:
+  selector:
+    app: dimitris-app-1
+  ports:
+  - port: 8088
+    targetPort: 8088
